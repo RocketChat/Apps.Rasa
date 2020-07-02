@@ -1,0 +1,6 @@
+{
+    "bot_username": "Bot Username",
+    "rasa_server_url": "Rasa Server Url",
+    "rasa_service_unavailable_message": "Service Unavailable Message",
+    "rasa_service_unavailable_message_description": "The Bot will send this message to Visitor if service is unavailable"
+}
