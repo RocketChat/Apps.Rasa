@@ -4,6 +4,8 @@ export enum AppSetting {
     RasaBotUsername = 'rasa_bot_username',
     RasaServerUrl = 'rasa_server_url',
     RasaServiceUnavailableMessage = 'rasa_service_unavailable_message',
+    RasaHandoverMessage = 'rasa_handover_message',
+    RasaCloseChatMessage = 'rasa_close_chat_message',
  }
 
 export const settings: Array<ISetting> = [
@@ -30,6 +32,24 @@ export const settings: Array<ISetting> = [
         packageValue: '',
         i18nLabel: 'rasa_service_unavailable_message',
         i18nDescription: 'rasa_service_unavailable_message_description',
+        required: false,
+    },
+    {
+        id: AppSetting.RasaCloseChatMessage,
+        public: true,
+        type: SettingType.STRING,
+        packageValue: '',
+        i18nLabel: 'rasa_close_chat_message',
+        i18nDescription: 'rasa_close_chat_message_description',
+        required: false,
+    },
+    {
+        id: AppSetting.RasaHandoverMessage,
+        public: true,
+        type: SettingType.STRING,
+        packageValue: '',
+        i18nLabel: 'rasa_handover_message',
+        i18nDescription: 'rasa_handover_message_description',
         required: false,
     },
 ];
