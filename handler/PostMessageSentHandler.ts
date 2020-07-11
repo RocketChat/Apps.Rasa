@@ -45,7 +45,7 @@ export class PostMessageSentHandler {
             return;
         }
 
-        let response: IRasaMessage;
+        let response: Array<IRasaMessage> | null;
         try {
             response = await sendMessage(this.read, this.http, rid, text);
         } catch (error) {
@@ -57,7 +57,10 @@ export class PostMessageSentHandler {
             return;
         }
 
-        await createRasaMessage(rid, this.read, this.modify, response);
-
+        if (response) {
+            for (const message of response) {
+                await createRasaMessage(rid, this.read, this.modify, message);
+            }
+        }
     }
 }

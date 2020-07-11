@@ -1,5 +1,6 @@
 export interface IRasaMessage {
-    messages: Array<string | IRasaQuickReplies>;
+    message: string | IRasaQuickReplies;
+    sessionId: string;
 }
 
 export interface IRasaQuickReplies {

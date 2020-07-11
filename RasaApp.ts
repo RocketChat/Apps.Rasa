@@ -13,6 +13,7 @@ import { ILivechatMessage } from '@rocket.chat/apps-engine/definition/livechat';
 import { IPostMessageSent } from '@rocket.chat/apps-engine/definition/messages';
 import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 import { settings } from './config/Settings';
+import { CallbackInputEndpoint } from './endpoints/CallbackInputEndpoint';
 import { IncomingEndpoint } from './endpoints/IncomingEndpoint';
 import { PostMessageSentHandler } from './handler/PostMessageSentHandler';
 
@@ -36,6 +37,7 @@ export class AppsRasaApp extends App implements IPostMessageSent {
             security: ApiSecurity.UNSECURE,
             endpoints: [
                 new IncomingEndpoint(this),
+                new CallbackInputEndpoint(this),
             ],
         });
         await Promise.all(settings.map((setting) => configuration.settings.provideSetting(setting)));

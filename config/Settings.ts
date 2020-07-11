@@ -6,6 +6,7 @@ export enum AppSetting {
     RasaServiceUnavailableMessage = 'rasa_service_unavailable_message',
     RasaHandoverMessage = 'rasa_handover_message',
     RasaCloseChatMessage = 'rasa_close_chat_message',
+    RasaEnableCallbacks = 'rasa_enable_callbacks',
  }
 
 export const settings: Array<ISetting> = [
@@ -50,6 +51,16 @@ export const settings: Array<ISetting> = [
         packageValue: '',
         i18nLabel: 'rasa_handover_message',
         i18nDescription: 'rasa_handover_message_description',
+        required: false,
+    },
+    {
+        id: AppSetting.RasaEnableCallbacks,
+        public: true,
+        type: SettingType.BOOLEAN,
+        packageValue: false,
+        value: false,
+        i18nLabel: 'rasa_callback_message',
+        i18nDescription: 'rasa_callback_message_description',
         required: false,
     },
 ];

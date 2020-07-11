@@ -6,5 +6,7 @@
     "rasa_handover_message": "Handover Message",
     "rasa_handover_message_description": "The Bot will send this message to Visitor upon handover",
     "rasa_close_chat_message": "Close Chat Message",
-    "rasa_close_chat_message_description": "This message will be sent automatically when a chat is closed"
+    "rasa_close_chat_message_description": "This message will be sent automatically when a chat is closed",
+    "rasa_callback_message": "Enable Callbacks",
+    "rasa_callback_message_description": "Enabling this setting will allow the app to use only callback messages. This feature is useful when you are using Reminder messages in your RASA bot."
 }

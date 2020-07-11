@@ -5,26 +5,22 @@ import { IRasaMessage, IRasaQuickReplies, IRasaQuickReply } from '../enum/Rasa';
 import { getAppSettingValue } from './Setting';
 
 export const createRasaMessage = async (rid: string, read: IRead,  modify: IModify, rasaMessage: IRasaMessage): Promise<any> => {
-    const { messages = [] } = rasaMessage;
+    const { text, quickReplies } = rasaMessage.message as IRasaQuickReplies;
 
-    for (const message of messages) {
-        const { text, quickReplies } = message as IRasaQuickReplies;
-
-        if (text && quickReplies) {
-            // message is instanceof IRasaQuickReplies
-            const actions: Array<IMessageAction> = quickReplies.map((payload: IRasaQuickReply) => ({
-                type: MessageActionType.BUTTON,
-                text: payload.title,
-                msg: payload.payload,
-                msg_in_chat_window: true,
-                msg_processing_type: MessageProcessingType.SendMessage,
-            } as IMessageAction));
-            const attachment: IMessageAttachment = { actions };
-            await createMessage(rid, read, modify, { text, attachment });
-        } else {
-            // message is instanceof string
-            await createMessage(rid, read, modify, { text: message });
-        }
+    if (text && quickReplies) {
+        // rasaMessage is instanceof IRasaQuickReplies
+        const actions: Array<IMessageAction> = quickReplies.map((payload: IRasaQuickReply) => ({
+            type: MessageActionType.BUTTON,
+            text: payload.title,
+            msg: payload.payload,
+            msg_in_chat_window: true,
+            msg_processing_type: MessageProcessingType.SendMessage,
+        } as IMessageAction));
+        const attachment: IMessageAttachment = { actions };
+        await createMessage(rid, read, modify, { text, attachment });
+    } else {
+        // rasaMessage is instanceof string
+        await createMessage(rid, read, modify, { text: rasaMessage.message });
     }
 };
 
