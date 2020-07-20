@@ -11,5 +11,5 @@
     "name": "Rasa",
     "nameSlug": "rasa",
     "classFile": "RasaApp.ts",
-    "description": "Integration between Rocket.Chat and the RASA Chatbot platform"
+    "description": "Integration between Rocket.Chat and the RASA Chatbot platform. Documentation available at: https://github.com/RocketChat/Apps.Rasa"
 }
