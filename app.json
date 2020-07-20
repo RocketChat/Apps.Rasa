@@ -6,10 +6,10 @@
     "author": {
         "name": "Rocket.Chat",
         "homepage": "https://rocket.chat/",
-        "support": "https://rocket.chat/"
+        "support": "support@rocket.chat"
     },
-    "name": "Apps.Rasa",
-    "nameSlug": "appsrasa",
+    "name": "Rasa",
+    "nameSlug": "rasa",
     "classFile": "RasaApp.ts",
     "description": "Integration between Rocket.Chat and the RASA Chatbot platform"
 }
