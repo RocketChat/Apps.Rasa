@@ -1,6 +1,7 @@
 import { HttpStatusCode, IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { ApiEndpoint, IApiEndpointInfo, IApiRequest, IApiResponse } from '@rocket.chat/apps-engine/definition/api';
-import { Headers } from '../enum/Http';
+import { Headers, Response } from '../enum/Http';
+import { Logs } from '../enum/Logs';
 import { IRasaMessage } from '../enum/Rasa';
 import { createHttpResponse } from '../lib/Http';
 import { createRasaMessage } from '../lib/Message';
@@ -15,13 +16,13 @@ export class CallbackInputEndpoint extends ApiEndpoint {
                       modify: IModify,
                       http: IHttp,
                       persis: IPersistence): Promise<IApiResponse> {
-        this.app.getLogger().info('Endpoint received an request');
+        this.app.getLogger().info(Logs.ENDPOINT_RECEIVED_REQUEST);
 
         try {
             await this.processRequest(read, modify, persis, request.content);
-            return createHttpResponse(HttpStatusCode.OK, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { result: 'Success' });
+            return createHttpResponse(HttpStatusCode.OK, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { result: Response.SUCCESS });
         } catch (error) {
-            this.app.getLogger().error('Error occurred while processing the request. Details:- ', error);
+            this.app.getLogger().error(`${ Logs.ENDPOINT_REQUEST_PROCESSING_ERROR } ${error}`);
             return createHttpResponse(HttpStatusCode.INTERNAL_SERVER_ERROR, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { error: error.message });
         }
     }

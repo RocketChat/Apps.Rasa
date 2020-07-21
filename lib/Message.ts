@@ -1,6 +1,7 @@
 import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { IMessageAction, IMessageAttachment, MessageActionType, MessageProcessingType } from '@rocket.chat/apps-engine/definition/messages';
 import { AppSetting } from '../config/Settings';
+import { Logs } from '../enum/Logs';
 import { IRasaMessage, IRasaQuickReplies, IRasaQuickReply } from '../enum/Rasa';
 import { getAppSettingValue } from './Setting';
 
@@ -31,19 +32,19 @@ export const createMessage = async (rid: string, read: IRead,  modify: IModify, 
 
     const botUserName = await getAppSettingValue(read, AppSetting.RasaBotUsername);
     if (!botUserName) {
-        this.app.getLogger().error('The Bot Username setting is not defined.');
+        this.app.getLogger().error(Logs.EMPTY_BOT_USERNAME_SETTING);
         return;
     }
 
     const sender = await read.getUserReader().getByUsername(botUserName);
     if (!sender) {
-        this.app.getLogger().error('The Bot User does not exist.');
+        this.app.getLogger().error(Logs.INVALID_BOT_USERNAME_SETTING);
         return;
     }
 
     const room = await read.getRoomReader().getById(rid);
     if (!room) {
-        this.app.getLogger().error(`Invalid room id ${rid}`);
+        this.app.getLogger().error(Logs.INVALID_ROOM_ID);
         return;
     }
 

@@ -1,13 +1,14 @@
 import { IHttp, IHttpRequest, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { AppSetting } from '../config/Settings';
 import { Headers } from '../enum/Http';
+import { Logs } from '../enum/Logs';
 import { IRasaMessage, IRasaQuickReplies, IRasaQuickReply } from '../enum/Rasa';
 import { createHttpRequest } from './Http';
 import { getAppSettingValue } from './Setting';
 
 export const sendMessage = async (read: IRead, http: IHttp, sender: string, message: string): Promise<Array<IRasaMessage> | null> => {
     const rasaServerUrl = await getAppSettingValue(read, AppSetting.RasaServerUrl);
-    if (!rasaServerUrl) { throw new Error('Error! Rasa server url setting empty'); }
+    if (!rasaServerUrl) { throw new Error(Logs.INVALID_RASA_SERVER_URL_SETTING); }
     const callbackEnabled: boolean = await getAppSettingValue(read, AppSetting.RasaEnableCallbacks);
 
     const httpRequestContent: IHttpRequest = createHttpRequest(
@@ -17,7 +18,7 @@ export const sendMessage = async (read: IRead, http: IHttp, sender: string, mess
 
     const rasaWebhookUrl = callbackEnabled ? `${rasaServerUrl}/webhooks/callback/webhook` : `${rasaServerUrl}/webhooks/rest/webhook`;
     const response = await http.post(rasaWebhookUrl, httpRequestContent);
-    if (response.statusCode !== 200) { throw Error(`Error occurred while interacting with Rasa Rest API. Details: ${response.content}`); }
+    if (response.statusCode !== 200) { throw Error(`${ Logs.RASA_REST_API_COMMUNICATION_ERROR } ${ response.content }`); }
 
     if (!callbackEnabled) {
         const parsedMessage = parseRasaResponse(response.data);
@@ -27,7 +28,7 @@ export const sendMessage = async (read: IRead, http: IHttp, sender: string, mess
 };
 
 export const parseRasaResponse = (response: any): Array<IRasaMessage> => {
-    if (!response) { throw new Error('Error Parsing Rasa\'s Response. Data is undefined'); }
+    if (!response) { throw new Error(Logs.INVALID_RESPONSE_FROM_RASA_CONTENT_UNDEFINED); }
 
     const messages: Array<IRasaMessage> = [];
 

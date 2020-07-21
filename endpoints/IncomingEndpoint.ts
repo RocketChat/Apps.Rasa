@@ -2,7 +2,8 @@ import { HttpStatusCode, IHttp, IModify, IPersistence, IRead } from '@rocket.cha
 import { ApiEndpoint, IApiEndpointInfo, IApiRequest, IApiResponse } from '@rocket.chat/apps-engine/definition/api';
 import { ILivechatRoom } from '@rocket.chat/apps-engine/definition/livechat';
 import { EndpointActionNames, IActionsEndpointContent } from '../enum/Endpoints';
-import { Headers } from '../enum/Http';
+import { Headers, Response } from '../enum/Http';
+import { Logs } from '../enum/Logs';
 import { createHttpResponse } from '../lib/Http';
 import { closeChat, performHandover } from '../lib/Room';
 
@@ -15,13 +16,13 @@ export class IncomingEndpoint extends ApiEndpoint {
                       modify: IModify,
                       http: IHttp,
                       persis: IPersistence): Promise<IApiResponse> {
-        this.app.getLogger().info('Endpoint recieved an request');
+        this.app.getLogger().info(Logs.ENDPOINT_RECEIVED_REQUEST);
 
         try {
             await this.processRequest(read, modify, persis, request.content);
-            return createHttpResponse(HttpStatusCode.OK, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { result: 'Success' });
+            return createHttpResponse(HttpStatusCode.OK, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { result: Response.SUCCESS });
         } catch (error) {
-            this.app.getLogger().error('Error occurred while processing the request. Details:- ', error);
+            this.app.getLogger().error(`${ Logs.ENDPOINT_REQUEST_PROCESSING_ERROR } ${ error }`);
             return createHttpResponse(HttpStatusCode.INTERNAL_SERVER_ERROR, { 'Content-Type': Headers.CONTENT_TYPE_JSON }, { error: error.message });
         }
     }
@@ -30,7 +31,7 @@ export class IncomingEndpoint extends ApiEndpoint {
 
         const { action, sessionId } = endpointContent;
         if (!sessionId) {
-            throw new Error('Error!! Session Id not present in payload');
+            throw new Error(Logs.INVALID_SESSION_ID);
         }
         switch (action) {
             case EndpointActionNames.CLOSE_CHAT:
@@ -39,12 +40,12 @@ export class IncomingEndpoint extends ApiEndpoint {
             case EndpointActionNames.HANDOVER:
                 const { actionData: { targetDepartment = '' } = {} } = endpointContent;
                 const room = await read.getRoomReader().getById(sessionId) as ILivechatRoom;
-                if (!room) { throw new Error('Error! Session Id not valid'); }
+                if (!room) { throw new Error(Logs.INVALID_SESSION_ID); }
                 const { visitor: { token: visitorToken } } = room;
                 await performHandover(modify, read, sessionId, visitorToken, targetDepartment);
                 break;
             default:
-                throw new Error('Error!! Invalid Action type');
+                throw new Error(Logs.INVALID_ENDPOINT_ACTION);
         }
     }
 }

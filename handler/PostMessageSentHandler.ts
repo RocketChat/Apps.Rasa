@@ -2,7 +2,8 @@ import { IHttp, IModify, IPersistence, IRead } from '@rocket.chat/apps-engine/de
 import { IApp } from '@rocket.chat/apps-engine/definition/IApp';
 import { ILivechatMessage, ILivechatRoom } from '@rocket.chat/apps-engine/definition/livechat';
 import { RoomType } from '@rocket.chat/apps-engine/definition/rooms';
-import { AppSetting } from '../config/Settings';
+import { AppSetting, DefaultMessage } from '../config/Settings';
+import { Logs } from '../enum/Logs';
 import { IRasaMessage } from '../enum/Rasa';
 import { createMessage, createRasaMessage } from '../lib/Message';
 import { sendMessage } from '../lib/Rasa';
@@ -49,10 +50,12 @@ export class PostMessageSentHandler {
         try {
             response = await sendMessage(this.read, this.http, rid, text);
         } catch (error) {
-            this.app.getLogger().error(`Error occurred while using Rasa Rest API. Details:- ${error.message}`);
+            this.app.getLogger().error(`${ Logs.RASA_REST_API_COMMUNICATION_ERROR } ${error.message}`);
 
             const serviceUnavailable: string = await getAppSettingValue(this.read, AppSetting.RasaServiceUnavailableMessage);
-            await createMessage(rid, this.read, this.modify, { text: serviceUnavailable ? serviceUnavailable : '' });
+            await createMessage(rid, this.read, this.modify, {
+                text: serviceUnavailable ? serviceUnavailable : DefaultMessage.DEFAULT_DialogflowServiceUnavailableMessage,
+            });
 
             return;
         }
