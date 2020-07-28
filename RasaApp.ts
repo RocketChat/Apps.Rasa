@@ -17,7 +17,7 @@ import { CallbackInputEndpoint } from './endpoints/CallbackInputEndpoint';
 import { IncomingEndpoint } from './endpoints/IncomingEndpoint';
 import { PostMessageSentHandler } from './handler/PostMessageSentHandler';
 
-export class AppsRasaApp extends App implements IPostMessageSent {
+export class RasaApp extends App implements IPostMessageSent {
     constructor(info: IAppInfo, logger: ILogger, accessors: IAppAccessors) {
         super(info, logger, accessors);
     }
