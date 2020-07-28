@@ -73,7 +73,9 @@ Integration between Rocket.Chat and the RASA Chatbot platform
         - This message will be sent automatically when a chat is closed
     5. Handover Message (optional)
         - The Bot will send this message to Visitor upon handover
-    6. Enable Callbacks
+    6. Default Handover Department Name (required)
+        - Enter the target department name where you want to transfer the visitor upon handover. Note that you can override setting using [Handover](./docs/api-endpoints/perform-handover.md) action.
+    7. Enable Callbacks
         - Enabling this setting will allow the app to use only callback messages. This feature is   useful when you are using Reminder messages in your RASA bot.
 
 ### Apps.Rasa's API
