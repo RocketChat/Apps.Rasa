@@ -54,7 +54,7 @@ export class PostMessageSentHandler {
 
             const serviceUnavailable: string = await getAppSettingValue(this.read, AppSetting.RasaServiceUnavailableMessage);
             await createMessage(rid, this.read, this.modify, {
-                text: serviceUnavailable ? serviceUnavailable : DefaultMessage.DEFAULT_DialogflowServiceUnavailableMessage,
+                text: serviceUnavailable ? serviceUnavailable : DefaultMessage.DEFAULT_RasaServiceUnavailableMessage,
             });
 
             return;

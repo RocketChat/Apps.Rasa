@@ -7,12 +7,13 @@ export enum AppSetting {
     RasaHandoverMessage = 'rasa_handover_message',
     RasaCloseChatMessage = 'rasa_close_chat_message',
     RasaEnableCallbacks = 'rasa_enable_callbacks',
+    RasaDefaultHandoverDepartment = 'rasa_target_handover_department',
 }
 
 export enum DefaultMessage {
-    DEFAULT_DialogflowServiceUnavailableMessage = 'Sorry, I\'m having trouble answering your question.',
-    DEFAULT_DialogflowHandoverMessage = 'Transferring to an online agent',
-    DEFAULT_DialogflowCloseChatMessage = 'Closing the chat, Goodbye',
+    DEFAULT_RasaServiceUnavailableMessage = 'Sorry, I\'m having trouble answering your question.',
+    DEFAULT_RasaHandoverMessage = 'Transferring to an online agent',
+    DEFAULT_RasaCloseChatMessage = 'Closing the chat, Goodbye',
 }
 
 export const settings: Array<ISetting> = [
@@ -60,6 +61,15 @@ export const settings: Array<ISetting> = [
         required: false,
     },
     {
+        id: AppSetting.RasaDefaultHandoverDepartment,
+        public: true,
+        type: SettingType.STRING,
+        packageValue: '',
+        i18nLabel: 'rasa_default_handover_department',
+        i18nDescription: 'rasa_default_handover_department_description',
+        required: true,
+    },
+    {
         id: AppSetting.RasaEnableCallbacks,
         public: true,
         type: SettingType.BOOLEAN,
@@ -67,6 +77,6 @@ export const settings: Array<ISetting> = [
         value: false,
         i18nLabel: 'rasa_callback_message',
         i18nDescription: 'rasa_callback_message_description',
-        required: false,
+        required: true,
     },
 ];

@@ -7,6 +7,7 @@ export enum Logs {
     INVALID_RASA_SERVER_URL_SETTING = 'Error! Rasa server url not valid',
     INVALID_VISITOR_TOKEN = 'Error: Visitor Token not valid',
     INVALID_DEPARTMENT_NAME = 'Error: Department Name is not valid',
+    INVALID_ACTION_USER_ALREADY_IN_DEPARTMENT = 'Error! Invalid request. User is already present in the specified department',
     ENDPOINT_REQUEST_PROCESSING_ERROR = 'Error occurred while processing the request. Details:- ',
     INVALID_ENDPOINT_ACTION = 'Error!! Invalid Action type',
     EMPTY_BOT_USERNAME_SETTING = 'The Bot Username setting is not defined.',
@@ -15,4 +16,5 @@ export enum Logs {
     INVALID_RESPONSE_FROM_RASA_CONTENT_UNDEFINED = 'Error Parsing RASA\'s Response. Content is undefined',
     CLOSE_CHAT_REQUEST_FAILED_ERROR = 'Error: Internal Server Error. Could not close the chat',
     HANDOVER_REQUEST_FAILED_ERROR = 'Error occurred while processing handover. Details',
+    INVALID_DEPARTMENT_NAME_IN_APP_SETTING = 'Error: Department Name is not valid in app setting',
 }

@@ -38,10 +38,13 @@ export class IncomingEndpoint extends ApiEndpoint {
                 await closeChat(modify, read, sessionId);
                 break;
             case EndpointActionNames.HANDOVER:
-                const { actionData: { targetDepartment = '' } = {} } = endpointContent;
+                const { actionData: { targetDepartment = null } = {} } = endpointContent;
                 const room = await read.getRoomReader().getById(sessionId) as ILivechatRoom;
                 if (!room) { throw new Error(Logs.INVALID_SESSION_ID); }
-                const { visitor: { token: visitorToken } } = room;
+                const { visitor: { token: visitorToken }, department: { name = null } = {} } = room;
+                if (targetDepartment && name && targetDepartment === name) {
+                    throw new Error(Logs.INVALID_ACTION_USER_ALREADY_IN_DEPARTMENT);
+                }
                 await performHandover(modify, read, sessionId, visitorToken, targetDepartment);
                 break;
             default:

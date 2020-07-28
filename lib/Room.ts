@@ -38,14 +38,14 @@ export const closeChat = async (modify: IModify, read: IRead, rid: string) => {
     const closeChatMessage = await getAppSettingValue(read, AppSetting.RasaCloseChatMessage);
 
     const result = await modify.getUpdater().getLivechatUpdater()
-                        .closeRoom(room, closeChatMessage ? closeChatMessage : DefaultMessage.DEFAULT_DialogflowCloseChatMessage);
+                        .closeRoom(room, closeChatMessage ? closeChatMessage : DefaultMessage.DEFAULT_RasaCloseChatMessage);
     if (!result) { throw new Error(Logs.CLOSE_CHAT_REQUEST_FAILED_ERROR); }
 };
 
-export const performHandover = async (modify: IModify, read: IRead, rid: string, visitorToken: string, targetDepartmentName?: string) => {
+export const performHandover = async (modify: IModify, read: IRead, rid: string, visitorToken: string, targetDepartmentName?: string | null) => {
 
     const handoverMessage: string = await getAppSettingValue(read, AppSetting.RasaHandoverMessage);
-    await createMessage(rid, read, modify, { text: handoverMessage ? handoverMessage : DefaultMessage.DEFAULT_DialogflowHandoverMessage });
+    await createMessage(rid, read, modify, { text: handoverMessage ? handoverMessage : DefaultMessage.DEFAULT_RasaHandoverMessage });
 
     const room: ILivechatRoom = (await read.getRoomReader().getById(rid)) as ILivechatRoom;
     if (!room) { throw new Error(Logs.INVALID_ROOM_ID); }
@@ -57,10 +57,17 @@ export const performHandover = async (modify: IModify, read: IRead, rid: string,
         currentRoom: room,
     };
 
-    // Fill livechatTransferData.targetDepartment param if required
+    // Fill livechatTransferData.targetDepartment param
     if (targetDepartmentName) {
         const targetDepartment: IDepartment = (await read.getLivechatReader().getLivechatDepartmentByIdOrName(targetDepartmentName)) as IDepartment;
         if (!targetDepartment) { throw new Error(Logs.INVALID_DEPARTMENT_NAME); }
+        livechatTransferData.targetDepartment = targetDepartment.id;
+    } else {
+        const defaultTargetDepartmentName = await getAppSettingValue(read, AppSetting.RasaDefaultHandoverDepartment);
+        if (!defaultTargetDepartmentName) { throw new Error(Logs.INVALID_DEPARTMENT_NAME_IN_APP_SETTING); }
+
+        const targetDepartment: IDepartment = (await read.getLivechatReader().getLivechatDepartmentByIdOrName(defaultTargetDepartmentName)) as IDepartment;
+        if (!targetDepartment) { throw new Error(Logs.INVALID_DEPARTMENT_NAME_IN_APP_SETTING); }
         livechatTransferData.targetDepartment = targetDepartment.id;
     }
 
@@ -71,6 +78,6 @@ export const performHandover = async (modify: IModify, read: IRead, rid: string,
     if (!result) {
         const offlineMessage: string = await getAppSettingValue(read, AppSetting.RasaServiceUnavailableMessage);
 
-        await createMessage(rid, read, modify, { text: offlineMessage ? offlineMessage : DefaultMessage.DEFAULT_DialogflowServiceUnavailableMessage });
+        await createMessage(rid, read, modify, { text: offlineMessage ? offlineMessage : DefaultMessage.DEFAULT_RasaServiceUnavailableMessage });
     }
 };
