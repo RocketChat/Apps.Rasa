@@ -22,7 +22,7 @@
    1. `action` = `handover`  <br/>
  
    2. `sessionId=[string]`
-      > Note. Session Id is the same session of Dialogflow
+      > Note. Session Id is the same session of Rasa
 
    **Optional:**
 
