@@ -1,0 +1,14 @@
+{
+    "bot_username": "Bot Username",
+    "rasa_server_url": "Rasa Server Url",
+    "rasa_service_unavailable_message": "Service Unavailable Message",
+    "rasa_service_unavailable_message_description": "The Bot will send this message to Visitor if service is unavailable",
+    "rasa_handover_message": "Handover Message",
+    "rasa_handover_message_description": "The Bot will send this message to Visitor upon handover",
+    "rasa_close_chat_message": "Close Chat Message",
+    "rasa_close_chat_message_description": "This message will be sent automatically when a chat is closed",
+    "rasa_callback_message": "Enable Callbacks",
+    "rasa_callback_message_description": "Enabling this setting will allow the app to use only callback messages. This feature is useful when you are using Reminder messages in your RASA bot.",
+    "rasa_default_handover_department": "Default Handover Department Name",
+    "rasa_default_handover_department_description": "Enter the target department name where you want to transfer the visitor upon handover"
+}
