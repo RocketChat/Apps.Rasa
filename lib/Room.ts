@@ -57,19 +57,17 @@ export const performHandover = async (modify: IModify, read: IRead, rid: string,
         currentRoom: room,
     };
 
-    // Fill livechatTransferData.targetDepartment param
-    if (targetDepartmentName) {
-        const targetDepartment: IDepartment = (await read.getLivechatReader().getLivechatDepartmentByIdOrName(targetDepartmentName)) as IDepartment;
-        if (!targetDepartment) { throw new Error(Logs.INVALID_DEPARTMENT_NAME); }
-        livechatTransferData.targetDepartment = targetDepartment.id;
-    } else {
-        const defaultTargetDepartmentName = await getAppSettingValue(read, AppSetting.RasaDefaultHandoverDepartment);
-        if (!defaultTargetDepartmentName) { throw new Error(Logs.INVALID_DEPARTMENT_NAME_IN_APP_SETTING); }
-
-        const targetDepartment: IDepartment = (await read.getLivechatReader().getLivechatDepartmentByIdOrName(defaultTargetDepartmentName)) as IDepartment;
-        if (!targetDepartment) { throw new Error(Logs.INVALID_DEPARTMENT_NAME_IN_APP_SETTING); }
-        livechatTransferData.targetDepartment = targetDepartment.id;
+    const targetDepartment = targetDepartmentName || await getAppSettingValue(read, AppSetting.RasaDefaultHandoverDepartment);
+    if (!targetDepartment) {
+        throw new Error(Logs.INVALID_DEPARTMENT_NAME_IN_BOTH_SETTING_AND_REQUEST);
     }
+
+    const departmentDB: IDepartment = await read.getLivechatReader().getLivechatDepartmentByIdOrName(targetDepartment) as IDepartment;
+    if (!departmentDB) {
+        throw new Error(Logs.INVALID_DEPARTMENT_NAME);
+    }
+
+    livechatTransferData.targetDepartment = departmentDB.id;
 
     const result = await modify.getUpdater().getLivechatUpdater().transferVisitor(visitor, livechatTransferData)
         .catch((error) => {

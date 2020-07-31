@@ -16,5 +16,5 @@ export enum Logs {
     INVALID_RESPONSE_FROM_RASA_CONTENT_UNDEFINED = 'Error Parsing RASA\'s Response. Content is undefined',
     CLOSE_CHAT_REQUEST_FAILED_ERROR = 'Error: Internal Server Error. Could not close the chat',
     HANDOVER_REQUEST_FAILED_ERROR = 'Error occurred while processing handover. Details',
-    INVALID_DEPARTMENT_NAME_IN_APP_SETTING = 'Error: Department Name is not valid in app setting',
+    INVALID_DEPARTMENT_NAME_IN_BOTH_SETTING_AND_REQUEST = 'Error: Department Name cannot be empty. Please provide a department name either in App Setting or in the handover Request',
 }
