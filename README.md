@@ -23,10 +23,9 @@ Integration between Rocket.Chat and the RASA Chatbot platform
 
         ```
         callback:
-        url: "http://localhost:3000/api/apps/public/646b8e7d-f1e1-419e-9478-10d0f5bc74d9/callback
-    "
-    ```
-    > Find the correct url in the App Details page, under API section.
+        url: "http://localhost:3000/api/apps/public/646b8e7d-f1e1-419e-9478-10d0f5bc74d9/callback"
+    	```
+    	> You can find the correct url in the App Details page, under API section.
 
 
 ### Installation steps:
