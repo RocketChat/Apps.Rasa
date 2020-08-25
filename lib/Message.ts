@@ -1,5 +1,6 @@
 import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { IMessageAction, IMessageAttachment, MessageActionType, MessageProcessingType } from '@rocket.chat/apps-engine/definition/messages';
+import { BlockElementType, IButtonElement, TextObjectType, IActionsBlock, BlockType } from '@rocket.chat/apps-engine/definition/uikit';
 import { AppSetting } from '../config/Settings';
 import { Logs } from '../enum/Logs';
 import { IRasaMessage, IRasaQuickReplies, IRasaQuickReply } from '../enum/Rasa';
@@ -10,15 +11,18 @@ export const createRasaMessage = async (rid: string, read: IRead,  modify: IModi
 
     if (text && quickReplies) {
         // rasaMessage is instanceof IRasaQuickReplies
-        const actions: Array<IMessageAction> = quickReplies.map((payload: IRasaQuickReply) => ({
-            type: MessageActionType.BUTTON,
-            text: payload.title,
-            msg: payload.payload,
-            msg_in_chat_window: true,
-            msg_processing_type: MessageProcessingType.SendMessage,
-        } as IMessageAction));
-        const attachment: IMessageAttachment = { actions };
-        await createMessage(rid, read, modify, { text, attachment });
+        const elements: Array<IButtonElement> = quickReplies.map((payload: IRasaQuickReply) => ({
+            type: BlockElementType.BUTTON,
+            text: {
+                type: TextObjectType.PLAINTEXT,
+                text: payload.title,
+            },
+            actionId: payload.title,
+        } as IButtonElement));
+
+        const actionsBlock: IActionsBlock = { type: BlockType.ACTIONS, elements };
+
+        await createMessage(rid, read, modify, { text, actionsBlock });
     } else {
         // rasaMessage is instanceof string
         await createMessage(rid, read, modify, { text: rasaMessage.message });
@@ -49,14 +53,15 @@ export const createMessage = async (rid: string, read: IRead,  modify: IModify, 
     }
 
     const msg = modify.getCreator().startMessage().setRoom(room).setSender(sender);
-    const { text, attachment } = message;
+    const { text, actionsBlock } = message;
 
     if (text) {
         msg.setText(text);
     }
 
-    if (attachment) {
-        msg.addAttachment(attachment);
+    if (actionsBlock) {
+        const { elements } = actionsBlock as IActionsBlock;
+        msg.addBlocks(modify.getCreator().getBlockBuilder().addActionsBlock({ elements }));
     }
 
     return new Promise(async (resolve) => {
