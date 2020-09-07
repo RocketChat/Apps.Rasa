@@ -77,6 +77,8 @@ Integration between Rocket.Chat and the RASA Chatbot platform
         - Enter the target department name where you want to transfer the visitor upon handover. Note that you can override setting using [Handover](./docs/api-endpoints/perform-handover.md) action.
     7. Enable Callbacks
         - Enabling this setting will allow the app to use only callback messages. This feature is   useful when you are using Reminder messages in your RASA bot.
+    8. Hide Quick Replies (required)
+        - If enabled, then all quick-replies will hide when a visitor clicks on any one of them
 
 ### Apps.Rasa's API
 
