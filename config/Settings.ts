@@ -8,6 +8,7 @@ export enum AppSetting {
     RasaCloseChatMessage = 'rasa_close_chat_message',
     RasaEnableCallbacks = 'rasa_enable_callbacks',
     RasaDefaultHandoverDepartment = 'rasa_target_handover_department',
+    RasaHideQuickReplies = 'rasa_hide_quick_replies',
 }
 
 export enum DefaultMessage {
@@ -77,6 +78,16 @@ export const settings: Array<ISetting> = [
         value: false,
         i18nLabel: 'rasa_callback_message',
         i18nDescription: 'rasa_callback_message_description',
+        required: true,
+    },
+    {
+        id: AppSetting.RasaHideQuickReplies,
+        public: true,
+        type: SettingType.BOOLEAN,
+        packageValue: true,
+        value: true,
+        i18nLabel: 'rasa_hide_quick_replies',
+        i18nDescription: 'rasa_hide_quick_replies_description',
         required: true,
     },
 ];
