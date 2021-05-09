@@ -17,4 +17,5 @@ export enum Logs {
     CLOSE_CHAT_REQUEST_FAILED_ERROR = 'Error: Internal Server Error. Could not close the chat',
     HANDOVER_REQUEST_FAILED_ERROR = 'Error occurred while processing handover. Details',
     INVALID_DEPARTMENT_NAME_IN_BOTH_SETTING_AND_REQUEST = 'Error: Department Name cannot be empty. Please provide a department name either in App Setting or in the handover Request',
+    NO_AGENTS_ONLINE = 'Handover failed! No agents online',
 }
