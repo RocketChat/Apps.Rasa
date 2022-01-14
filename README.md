@@ -101,4 +101,4 @@ The app provides API to trigger specific actions. The URL for the API can be fou
 
 ### Adding Quick Replies support to your Rasa Bot
 
-- Rasa App provides out of the box support for quick replies. To add quick-replies, you can follow the structure defined in Rasa [here](https://rasa.com/docs/rasa/core/domains/#images-and-buttons)
+- Rasa App provides out of the box support for quick replies. To add quick-replies, you can follow the structure defined in Rasa [here](https://rasa.com/docs/rasa/responses#rich-responses)
