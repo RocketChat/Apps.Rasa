@@ -77,5 +77,7 @@ export const performHandover = async (modify: IModify, read: IRead, rid: string,
         const offlineMessage: string = await getAppSettingValue(read, AppSetting.RasaServiceUnavailableMessage);
 
         await createMessage(rid, read, modify, { text: offlineMessage ? offlineMessage : DefaultMessage.DEFAULT_RasaServiceUnavailableMessage });
+
+        throw new Error(Logs.NO_AGENTS_ONLINE);
     }
 };
